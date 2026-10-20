@@ -6,6 +6,8 @@ workflows:
     '.github/workflows/ci.yml':
         - 'actions/checkout@v4.4.0'
         - 'actions/setup-node@v4.4.0'
+    '.github/workflows/lockfile.yml':
+        - 'actions/checkout@v4.4.0'
     '.github/workflows/release-demo.yml':
         - 'actions/checkout@v4.4.0'
         - 'cli/gh-extension-precompile@v2.2.0'
