@@ -4,4 +4,4 @@ runs:
   using: composite
   steps:
     - shell: bash
-      run: echo "LAB-ACTION SAYS original-v1"
+      run: echo "LAB-ACTION SAYS MALICIOUS-descendant"
