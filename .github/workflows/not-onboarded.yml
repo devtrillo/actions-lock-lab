@@ -1,0 +1,12 @@
+name: not-onboarded
+on:
+  push:
+    branches: [demo/not-onboarded]
+permissions:
+  contents: read
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "not in actions.lock"
