@@ -1,0 +1,10 @@
+name: Setup runtime
+description: Composite action that installs Node (transitive dependency demo).
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: "22"
+    - shell: bash
+      run: node --version
