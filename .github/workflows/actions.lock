@@ -12,6 +12,9 @@ workflows:
         - 'actions/checkout@v4.4.0'
         - 'cli/gh-extension-precompile@v2.2.0'
     '.github/workflows/reusable-demo.yml': []
+    '.github/workflows/typecheck.yml':
+        - 'actions/checkout@v4.4.0'
+        - 'oven-sh/setup-bun@v2.2.0'
 dependencies:
     'actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32':
         ref: 'v4.1.0'
@@ -48,3 +51,8 @@ dependencies:
         uses:
             - 'actions/attest-build-provenance@a2bbfa25375fe432b6a289bc6b6cd05ecd0c4c32'
             - 'actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c'
+    'oven-sh/setup-bun@v2.2.0':
+        ref: 'v2.2.0'
+        commit: 'sha1-0c5077e51419868618aeaa5fe8019c62421857d6'
+        owner_id: 108928776
+        repo_id: 512644635

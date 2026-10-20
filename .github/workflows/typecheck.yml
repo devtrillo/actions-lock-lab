@@ -1,0 +1,49 @@
+name: typecheck
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.4.0
+      - uses: oven-sh/setup-bun@v2.2.0
+        with:
+          bun-version: 1.4.3
+      - run: bun install --frozen-lockfile
+      - name: bun check
+        run: time bun check
+      - name: tsc 7.0.2
+        if: always()
+        run: time bunx -p typescript@7.0.2 tsc --noEmit --pretty false
+  bench:
+    # Linux timings on the same Playwright commit used for the M1 numbers in the brief.
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: oven-sh/setup-bun@v2.2.0
+        with:
+          bun-version: 1.4.3
+      - run: |
+          nproc; free -m | head -2
+          git init -q pw && cd pw
+          git fetch -q --depth 1 https://github.com/microsoft/playwright 27219bd2cc94e1ebceec58f188760a6bf458c192
+          git checkout -q FETCH_HEAD
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm i --prefix /tmp/tsc7 --no-audit --no-fund typescript@7.0.2
+      - name: bench (1 warmup + 7 runs each; wall seconds and max RSS KB)
+        working-directory: pw
+        run: |
+          bench() { label=$1; shift; "$@" >/dev/null 2>&1 || true
+            for i in 1 2 3 4 5 6 7; do /usr/bin/time -f "$label %e s %M KB" "$@" >/dev/null 2>>/tmp/times.txt || true; done; }
+          bench tsc7 /tmp/tsc7/node_modules/.bin/tsc --noEmit
+          bench bun-check bun check
+          bench bunx-tsc7 bunx -p typescript@7.0.2 tsc --noEmit
+          grep -E '^(tsc7|bun-check|bunx-tsc7) ' /tmp/times.txt
+          for l in tsc7 bun-check bunx-tsc7; do
+            grep "^$l " /tmp/times.txt | awk -v l=$l '{w[NR]=$2; r[NR]=$4} END {n=asort(w); asort(r); m=int((n+1)/2); printf "%s median %.2fs, median maxRSS %d MB\n", l, w[m], r[m]/1024}'
+          done
