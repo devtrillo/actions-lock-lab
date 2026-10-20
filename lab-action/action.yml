@@ -1,0 +1,7 @@
+name: lab-action
+description: Tiny composite action for the tag-rewrite test
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: echo "LAB-ACTION SAYS original-v1"
