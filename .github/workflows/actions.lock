@@ -6,6 +6,7 @@ workflows:
     '.github/workflows/ci.yml':
         - 'actions/checkout@v4.4.0'
         - 'actions/setup-node@v4.4.0'
+        - 'actions/upload-artifact@v4.6.2'
     '.github/workflows/lockfile.yml':
         - 'actions/checkout@v4.4.0'
     '.github/workflows/release-demo.yml':
@@ -40,6 +41,11 @@ dependencies:
         commit: 'sha1-49933ea5288caeca8642d1e84afbd3f7d6820020'
         owner_id: 44036562
         repo_id: 189476904
+    'actions/upload-artifact@v4.6.2':
+        ref: 'v4.6.2'
+        commit: 'sha1-ea165f8d65b6e75b540449e92b4886f43607fa02'
+        owner_id: 44036562
+        repo_id: 192625955
     'cli/gh-extension-precompile@v2.2.0':
         ref: 'v2.2.0'
         commit: 'sha1-76961aa3bd1123d0a6fd42d0a41aca0696937c39'
