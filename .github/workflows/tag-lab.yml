@@ -1,0 +1,9 @@
+name: tag-lab
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: devtrillo/actions-lock-lab/lab-action@lab-v1
